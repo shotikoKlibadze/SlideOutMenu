@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		09A28FD327F611DA007A7A4C /* BaseSlidingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09A28FD227F611DA007A7A4C /* BaseSlidingController.swift */; };
+		09A28FD627FB0F91007A7A4C /* CustomMenuHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09A28FD527FB0F91007A7A4C /* CustomMenuHeaderView.swift */; };
 		09AE37F927EC8F7400A8BF12 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09AE37F827EC8F7400A8BF12 /* AppDelegate.swift */; };
 		09AE37FB27EC8F7400A8BF12 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09AE37FA27EC8F7400A8BF12 /* SceneDelegate.swift */; };
 		09AE37FD27EC8F7400A8BF12 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09AE37FC27EC8F7400A8BF12 /* HomeViewController.swift */; };
@@ -18,6 +19,7 @@
 
 /* Begin PBXFileReference section */
 		09A28FD227F611DA007A7A4C /* BaseSlidingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseSlidingController.swift; sourceTree = "<group>"; };
+		09A28FD527FB0F91007A7A4C /* CustomMenuHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomMenuHeaderView.swift; sourceTree = "<group>"; };
 		09AE37F527EC8F7400A8BF12 /* SlideOutMenu.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SlideOutMenu.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		09AE37F827EC8F7400A8BF12 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		09AE37FA27EC8F7400A8BF12 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -47,6 +49,14 @@
 			path = Base;
 			sourceTree = "<group>";
 		};
+		09A28FD427FB0F75007A7A4C /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				09A28FD527FB0F91007A7A4C /* CustomMenuHeaderView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		09AE37EC27EC8F7400A8BF12 = {
 			isa = PBXGroup;
 			children = (
@@ -66,6 +76,7 @@
 		09AE37F727EC8F7400A8BF12 /* SlideOutMenu */ = {
 			isa = PBXGroup;
 			children = (
+				09A28FD427FB0F75007A7A4C /* Views */,
 				09AE380C27EC90A600A8BF12 /* APP */,
 				09AE380D27EC90B400A8BF12 /* Supporting Files */,
 				09A28FD127F6067A007A7A4C /* Base */,
@@ -165,6 +176,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				09AE37FD27EC8F7400A8BF12 /* HomeViewController.swift in Sources */,
+				09A28FD627FB0F91007A7A4C /* CustomMenuHeaderView.swift in Sources */,
 				09AE37F927EC8F7400A8BF12 /* AppDelegate.swift in Sources */,
 				09AE37FB27EC8F7400A8BF12 /* SceneDelegate.swift in Sources */,
 				09AE380F27ECA89600A8BF12 /* MenuViewController.swift in Sources */,
