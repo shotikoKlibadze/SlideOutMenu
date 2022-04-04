@@ -9,7 +9,7 @@ import UIKit
 
 class HomeViewController: UITableViewController {
     
-    let menuVc = MenuViewController()
+   // let menuVc = MenuViewController()
     let darkCoverView = UIView()
     var menuWidth = CGFloat()
     var menuIsOpen = false
@@ -18,7 +18,7 @@ class HomeViewController: UITableViewController {
         super.viewDidLoad()
         view.backgroundColor = .white
         setupNavigationItems()
-        setupPanGesture()
+       // setupPanGesture()
         
     }
     
@@ -26,11 +26,11 @@ class HomeViewController: UITableViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        menuWidth = view.frame.width * 0.65
-        menuVc.view.frame = CGRect(x: -menuWidth, y: 0, width: menuWidth, height: view.frame.height)
+        menuWidth = 400
+     //   menuVc.view.frame = CGRect(x: -menuWidth, y: 0, width: menuWidth, height: view.frame.height)
         guard let keyWindow = view.window?.windowScene?.keyWindow else { return }
-        keyWindow.addSubview(menuVc.view)
-        addChild(menuVc)
+      //  keyWindow.addSubview(menuVc.view)
+      //  addChild(menuVc)
         setupDarkCover()
     }
     
@@ -46,6 +46,7 @@ class HomeViewController: UITableViewController {
     
     private func setupPanGesture() {
         let panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePan(gesture:)))
+        panGesture.delegate = self
         view.addGestureRecognizer(panGesture)
     }
     
@@ -64,9 +65,8 @@ class HomeViewController: UITableViewController {
             }
             x = min(x, menuWidth)
             x = max(x, 0)
-            print(x)
             let transform = CGAffineTransform(translationX: x, y: 0)
-            menuVc.view.transform = transform
+           // menuVc.view.transform = transform
             navigationController?.view.transform = transform
             darkCoverView.transform = transform
             darkCoverView.alpha = x / menuWidth
@@ -113,7 +113,7 @@ class HomeViewController: UITableViewController {
     private func performAnimation(transform: CGAffineTransform) {
         UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut) { [weak self] in
             guard let self = self else {return}
-            self.menuVc.view.transform = transform
+          //  self.menuVc.view.transform = transform
             self.navigationController?.view.transform = transform
             self.darkCoverView.transform = transform
             self.darkCoverView.alpha = transform == .identity ? 0 : 1
@@ -138,5 +138,12 @@ class HomeViewController: UITableViewController {
         return cell
     }
 
+}
+
+extension HomeViewController : UIGestureRecognizerDelegate {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        
+        return true
+    }
 }
 
