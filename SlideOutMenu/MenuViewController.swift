@@ -10,10 +10,14 @@ import UIKit
 
 class MenuViewController : UITableViewController {
     
+    let menuItems = ["Profile", "Moments", "Lists", "Bookmarks"]
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.backgroundColor = .blue
-        view.backgroundColor = .red
+        view.backgroundColor = .systemGray5
+        tableView.separatorStyle = .none
+        tableView.isScrollEnabled = false
+      
     }
     
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -26,13 +30,22 @@ class MenuViewController : UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
+        return menuItems.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell(style: .default, reuseIdentifier: "MenuCell")
-        cell.textLabel?.text = "Row: \(indexPath.row)"
+        let cell = MenuTableViewCell(style: .default, reuseIdentifier: "MenuCell")
+        cell.backgroundColor = .systemGray5
+        cell.tittleLable.text = menuItems[indexPath.row]
+        cell.iconImageView.image = UIImage(named: menuItems[indexPath.row])
+       
         return cell
     }
+        
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
+    
     
 }
