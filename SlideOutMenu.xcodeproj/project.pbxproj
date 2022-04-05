@@ -10,6 +10,8 @@
 		09A28FD327F611DA007A7A4C /* BaseSlidingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09A28FD227F611DA007A7A4C /* BaseSlidingController.swift */; };
 		09A28FD627FB0F91007A7A4C /* CustomMenuHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09A28FD527FB0F91007A7A4C /* CustomMenuHeaderView.swift */; };
 		09A28FD927FB38B9007A7A4C /* MenuTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09A28FD827FB38B9007A7A4C /* MenuTableViewCell.swift */; };
+		09A28FDC27FC7B85007A7A4C /* BookmarksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09A28FDB27FC7B85007A7A4C /* BookmarksViewController.swift */; };
+		09A28FDE27FC7B9B007A7A4C /* ListsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09A28FDD27FC7B9B007A7A4C /* ListsViewController.swift */; };
 		09AE37F927EC8F7400A8BF12 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09AE37F827EC8F7400A8BF12 /* AppDelegate.swift */; };
 		09AE37FB27EC8F7400A8BF12 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09AE37FA27EC8F7400A8BF12 /* SceneDelegate.swift */; };
 		09AE37FD27EC8F7400A8BF12 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09AE37FC27EC8F7400A8BF12 /* HomeViewController.swift */; };
@@ -22,6 +24,8 @@
 		09A28FD227F611DA007A7A4C /* BaseSlidingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseSlidingController.swift; sourceTree = "<group>"; };
 		09A28FD527FB0F91007A7A4C /* CustomMenuHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomMenuHeaderView.swift; sourceTree = "<group>"; };
 		09A28FD827FB38B9007A7A4C /* MenuTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuTableViewCell.swift; sourceTree = "<group>"; };
+		09A28FDB27FC7B85007A7A4C /* BookmarksViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarksViewController.swift; sourceTree = "<group>"; };
+		09A28FDD27FC7B9B007A7A4C /* ListsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListsViewController.swift; sourceTree = "<group>"; };
 		09AE37F527EC8F7400A8BF12 /* SlideOutMenu.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SlideOutMenu.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		09AE37F827EC8F7400A8BF12 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		09AE37FA27EC8F7400A8BF12 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -67,6 +71,15 @@
 			path = Cell;
 			sourceTree = "<group>";
 		};
+		09A28FDA27FC7B50007A7A4C /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				09A28FDB27FC7B85007A7A4C /* BookmarksViewController.swift */,
+				09A28FDD27FC7B9B007A7A4C /* ListsViewController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
 		09AE37EC27EC8F7400A8BF12 = {
 			isa = PBXGroup;
 			children = (
@@ -86,6 +99,7 @@
 		09AE37F727EC8F7400A8BF12 /* SlideOutMenu */ = {
 			isa = PBXGroup;
 			children = (
+				09A28FDA27FC7B50007A7A4C /* Controllers */,
 				09A28FD727FB389F007A7A4C /* Cell */,
 				09AE380C27EC90A600A8BF12 /* APP */,
 				09AE380D27EC90B400A8BF12 /* Supporting Files */,
@@ -186,6 +200,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				09A28FDC27FC7B85007A7A4C /* BookmarksViewController.swift in Sources */,
 				09AE37FD27EC8F7400A8BF12 /* HomeViewController.swift in Sources */,
 				09A28FD627FB0F91007A7A4C /* CustomMenuHeaderView.swift in Sources */,
 				09A28FD927FB38B9007A7A4C /* MenuTableViewCell.swift in Sources */,
@@ -193,6 +208,7 @@
 				09AE37FB27EC8F7400A8BF12 /* SceneDelegate.swift in Sources */,
 				09AE380F27ECA89600A8BF12 /* MenuViewController.swift in Sources */,
 				09A28FD327F611DA007A7A4C /* BaseSlidingController.swift in Sources */,
+				09A28FDE27FC7B9B007A7A4C /* ListsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

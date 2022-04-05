@@ -11,19 +11,21 @@ import UIKit
 
 class BaseSlidingController: UIViewController {
     
-    var redViewLeadingConstraint: NSLayoutConstraint!
+    var homeControllerViewConstraint: NSLayoutConstraint!
     fileprivate var menuWidth: CGFloat = 250
     fileprivate var velocityThreshold: CGFloat = 500
     fileprivate var isMenuOpened = false
     
-    let redView: UIView = {
+    var actingViewController : UIViewController?
+    
+    let mainControllerView: UIView = {
         let v = UIView()
         v.backgroundColor = .red
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()
     
-    let blueView: UIView = {
+    let menuControllerView: UIView = {
         let v = UIView()
         v.backgroundColor = .blue
         v.translatesAutoresizingMaskIntoConstraints = false
@@ -62,7 +64,7 @@ class BaseSlidingController: UIViewController {
         x = min(menuWidth, x)
         x = max(0, x)
         
-        redViewLeadingConstraint.constant = x
+        homeControllerViewConstraint.constant = x
         darkCoverView.alpha = x / menuWidth
         
         if gesture.state == .ended {
@@ -101,14 +103,41 @@ class BaseSlidingController: UIViewController {
     
     fileprivate func openMenu() {
         isMenuOpened = true
-        redViewLeadingConstraint.constant = menuWidth
+        homeControllerViewConstraint.constant = menuWidth
         performAnimations()
     }
     
     fileprivate func closeMenu() {
-        redViewLeadingConstraint.constant = 0
+        homeControllerViewConstraint.constant = 0
         isMenuOpened = false
         performAnimations()
+    }
+    
+    func didSelectMenuItem(indexPath: IndexPath) {
+        cleanUpMainViewController()
+        switch indexPath.row {
+        case 0:
+            print("Show Home")
+        case 1:
+            print("Show Moments")
+        case 2:
+            let vc = ListsViewController()
+            mainControllerView.addSubview(vc.view)
+            addChild(vc)
+            actingViewController = vc
+        default :
+            let vc = BookmarksViewController()
+            mainControllerView.addSubview(vc.view)
+            addChild(vc)
+            actingViewController = vc
+        }
+        mainControllerView.bringSubviewToFront(darkCoverView)
+        closeMenu()
+    }
+    
+    fileprivate func cleanUpMainViewController() {
+        actingViewController?.view.removeFromSuperview()
+        actingViewController?.removeFromParent()
     }
     
     fileprivate func performAnimations() {
@@ -122,62 +151,64 @@ class BaseSlidingController: UIViewController {
     
     
     fileprivate func setupViews() {
-        view.addSubview(redView)
-        view.addSubview(blueView)
+        view.addSubview(mainControllerView)
+        view.addSubview(menuControllerView)
         
         // let's go ahead and use Auto Layout
         NSLayoutConstraint.activate([
-            redView.topAnchor.constraint(equalTo: view.topAnchor),
-            redView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            redView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            mainControllerView.topAnchor.constraint(equalTo: view.topAnchor),
+            mainControllerView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            mainControllerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             
-            blueView.topAnchor.constraint(equalTo: view.topAnchor),
-            blueView.trailingAnchor.constraint(equalTo: redView.safeAreaLayoutGuide.leadingAnchor),
-            blueView.widthAnchor.constraint(equalToConstant: menuWidth),
-            blueView.bottomAnchor.constraint(equalTo: redView.bottomAnchor)
+            menuControllerView.topAnchor.constraint(equalTo: view.topAnchor),
+            menuControllerView.trailingAnchor.constraint(equalTo: mainControllerView.safeAreaLayoutGuide.leadingAnchor),
+            menuControllerView.widthAnchor.constraint(equalToConstant: menuWidth),
+            menuControllerView.bottomAnchor.constraint(equalTo: mainControllerView.bottomAnchor)
             ])
         
-        self.redViewLeadingConstraint = redView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0)
-        redViewLeadingConstraint.isActive = true
+        self.homeControllerViewConstraint = mainControllerView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0)
+        homeControllerViewConstraint.isActive = true
         
         setupViewControllers()
     }
     
     fileprivate func setupViewControllers() {
         // let's add back our HomeController into the redView
-        let homeController = HomeViewController()
+      //  let homeController = HomeViewController()
+        actingViewController = HomeViewController()
         let menuController = MenuViewController()
         
-        let homeView = homeController.view!
+        let homeView = actingViewController!.view!
         let menuView = menuController.view!
         
         homeView.translatesAutoresizingMaskIntoConstraints = false
         menuView.translatesAutoresizingMaskIntoConstraints = false
         
-        redView.addSubview(homeView)
-        redView.addSubview(darkCoverView)
-        blueView.addSubview(menuView)
+        mainControllerView.addSubview(homeView)
+        mainControllerView.addSubview(darkCoverView)
+        menuControllerView.addSubview(menuView)
         
         NSLayoutConstraint.activate([
             // top, leading, bottom, trailing anchors
-            homeView.topAnchor.constraint(equalTo: redView.topAnchor),
-            homeView.leadingAnchor.constraint(equalTo: redView.leadingAnchor),
-            homeView.bottomAnchor.constraint(equalTo: redView.bottomAnchor),
-            homeView.trailingAnchor.constraint(equalTo: redView.trailingAnchor),
+            homeView.topAnchor.constraint(equalTo: mainControllerView.topAnchor),
+            homeView.leadingAnchor.constraint(equalTo: mainControllerView.leadingAnchor),
+            homeView.bottomAnchor.constraint(equalTo: mainControllerView.bottomAnchor),
+            homeView.trailingAnchor.constraint(equalTo: mainControllerView.trailingAnchor),
             
-            menuView.topAnchor.constraint(equalTo: blueView.topAnchor),
-            menuView.leadingAnchor.constraint(equalTo: blueView.leadingAnchor),
-            menuView.bottomAnchor.constraint(equalTo: blueView.bottomAnchor),
-            menuView.trailingAnchor.constraint(equalTo: blueView.trailingAnchor),
+            menuView.topAnchor.constraint(equalTo: menuControllerView.topAnchor),
+            menuView.leadingAnchor.constraint(equalTo: menuControllerView.leadingAnchor),
+            menuView.bottomAnchor.constraint(equalTo: menuControllerView.bottomAnchor),
+            menuView.trailingAnchor.constraint(equalTo: menuControllerView.trailingAnchor),
             
-            darkCoverView.topAnchor.constraint(equalTo: redView.topAnchor),
-            darkCoverView.leadingAnchor.constraint(equalTo: redView.leadingAnchor),
-            darkCoverView.bottomAnchor.constraint(equalTo: redView.bottomAnchor),
-            darkCoverView.trailingAnchor.constraint(equalTo: redView.trailingAnchor),
+            darkCoverView.topAnchor.constraint(equalTo: mainControllerView.topAnchor),
+            darkCoverView.leadingAnchor.constraint(equalTo: mainControllerView.leadingAnchor),
+            darkCoverView.bottomAnchor.constraint(equalTo: mainControllerView.bottomAnchor),
+            darkCoverView.trailingAnchor.constraint(equalTo: mainControllerView.trailingAnchor),
             ])
         
-        addChild(homeController)
+        addChild(actingViewController!)
         addChild(menuController)
+        menuController.didMove(toParent: self)
     }
 
 }

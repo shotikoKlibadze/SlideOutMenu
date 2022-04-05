@@ -10,7 +10,9 @@ import UIKit
 
 class MenuViewController : UITableViewController {
     
-    let menuItems = ["Profile", "Moments", "Lists", "Bookmarks"]
+    let menuItems = ["Home", "Moments", "Lists", "Bookmarks"]
+    
+    weak var controller : BaseSlidingController?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -18,6 +20,12 @@ class MenuViewController : UITableViewController {
         tableView.separatorStyle = .none
         tableView.isScrollEnabled = false
       
+    }
+    
+    override func didMove(toParent parent: UIViewController?) {
+        super.didMove(toParent: parent)
+        guard let parent = parent as? BaseSlidingController else { return }
+        controller = parent
     }
     
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -44,6 +52,7 @@ class MenuViewController : UITableViewController {
         
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        controller?.didSelectMenuItem(indexPath: indexPath)
     }
     
     
