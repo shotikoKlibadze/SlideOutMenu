@@ -7,25 +7,31 @@
 
 import UIKit
 
-class BookmarksViewController: UIViewController {
+class BookmarksViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
-    var label : UILabel  = {
-        let label = UILabel()
-        label.text = "Bookmarks"
-        label.font = UIFont.systemFont(ofSize: 20, weight: .bold)
-        label.textAlignment = .center
-        return label
+    var tableView : UITableView = {
+        let tablView = UITableView()
+        return tablView
     }()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.addSubview(label)
-        view.backgroundColor = .white
-        label.frame = view.frame
-
+        view.backgroundColor = .blue
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.frame = view.bounds
+        view.addSubview(tableView)
     }
     
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 5
+    }
 
-   
-
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
+        cell.textLabel?.text = "Bookmark: \(indexPath.row)"
+        cell.backgroundColor = .white
+        return cell
+    }
+    
 }

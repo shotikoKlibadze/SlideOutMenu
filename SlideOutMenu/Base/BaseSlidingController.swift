@@ -11,14 +11,16 @@ import UIKit
 
 class BaseSlidingController: UIViewController {
     
-    var homeControllerViewConstraint: NSLayoutConstraint!
+    var mainViewLeadingContstraint: NSLayoutConstraint!
+    var mainViewTrailingConstraint: NSLayoutConstraint!
+    
     fileprivate var menuWidth: CGFloat = 250
     fileprivate var velocityThreshold: CGFloat = 500
     fileprivate var isMenuOpened = false
     
-    var actingViewController : UIViewController?
+    var actingViewController : UIViewController = UINavigationController(rootViewController: HomeViewController())
     
-    let mainControllerView: UIView = {
+    let mainView: UIView = {
         let v = UIView()
         v.backgroundColor = .red
         v.translatesAutoresizingMaskIntoConstraints = false
@@ -42,18 +44,20 @@ class BaseSlidingController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
         view.backgroundColor = .yellow
-        
         setupViews()
-        
-        // how do we translate our red view
+        setupGestures()
+    }
+
+    private func setupGestures() {
         let panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePan))
         view.addGestureRecognizer(panGesture)
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTapDismiss))
+        darkCoverView.addGestureRecognizer(tapGesture)
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-       // menuWidth = view.frame.width * 0.65
+    @objc func handleTapDismiss() {
+        closeMenu()
     }
     
     @objc func handlePan(gesture: UIPanGestureRecognizer) {
@@ -64,7 +68,8 @@ class BaseSlidingController: UIViewController {
         x = min(menuWidth, x)
         x = max(0, x)
         
-        homeControllerViewConstraint.constant = x
+        mainViewLeadingContstraint.constant = x
+        mainViewTrailingConstraint.constant = x
         darkCoverView.alpha = x / menuWidth
         
         if gesture.state == .ended {
@@ -76,7 +81,6 @@ class BaseSlidingController: UIViewController {
         let translation = gesture.translation(in: view)
         let velocity = gesture.velocity(in: view)
         
-        // Cleaning up this section of code to solve for Lesson #10 Challenge of velocity and darkCoverView
         if isMenuOpened {
             if abs(velocity.x) > velocityThreshold {
                 closeMenu()
@@ -92,7 +96,6 @@ class BaseSlidingController: UIViewController {
                 openMenu()
                 return
             }
-            
             if translation.x < menuWidth / 2 {
                 closeMenu()
             } else {
@@ -101,114 +104,113 @@ class BaseSlidingController: UIViewController {
         }
     }
     
-    fileprivate func openMenu() {
+    func openMenu() {
         isMenuOpened = true
-        homeControllerViewConstraint.constant = menuWidth
+        mainViewLeadingContstraint.constant = menuWidth
+        mainViewTrailingConstraint.constant = menuWidth
         performAnimations()
     }
     
-    fileprivate func closeMenu() {
-        homeControllerViewConstraint.constant = 0
+    func closeMenu() {
+        mainViewLeadingContstraint.constant = 0
+        mainViewTrailingConstraint.constant = 0
         isMenuOpened = false
         performAnimations()
     }
     
     func didSelectMenuItem(indexPath: IndexPath) {
         cleanUpMainViewController()
+        closeMenu()
         switch indexPath.row {
         case 0:
-            print("Show Home")
+            actingViewController = UINavigationController(rootViewController: HomeViewController())
         case 1:
-            print("Show Moments")
+            let tabBarController = UITabBarController()
+            let momentsController = UIViewController()
+            momentsController.view.backgroundColor = .systemGray6
+            momentsController.tabBarItem.title = "Moments"
+            let momentsController2 = UIViewController()
+            momentsController2.view.backgroundColor = .systemGray5
+            momentsController2.tabBarItem.title = "Moments2"
+            tabBarController.viewControllers = [momentsController , momentsController2]
+            actingViewController = tabBarController
         case 2:
-            let vc = ListsViewController()
-            mainControllerView.addSubview(vc.view)
-            addChild(vc)
-            actingViewController = vc
+            actingViewController = UINavigationController(rootViewController: ListsViewController())
         default :
-            let vc = BookmarksViewController()
-            mainControllerView.addSubview(vc.view)
-            addChild(vc)
-            actingViewController = vc
+            actingViewController = BookmarksViewController()
         }
-        mainControllerView.bringSubviewToFront(darkCoverView)
-        closeMenu()
+        addChild(actingViewController)
+        mainView.addSubview(actingViewController.view)
+        mainView.bringSubviewToFront(darkCoverView)
     }
     
     fileprivate func cleanUpMainViewController() {
-        actingViewController?.view.removeFromSuperview()
-        actingViewController?.removeFromParent()
+        actingViewController.view.removeFromSuperview()
+        actingViewController.removeFromParent()
     }
     
     fileprivate func performAnimations() {
         UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
-            // leave a reference link down in desc below
             self.view.layoutIfNeeded()
             self.darkCoverView.alpha = self.isMenuOpened ? 1 : 0
         })
     }
     
-    
-    
     fileprivate func setupViews() {
-        view.addSubview(mainControllerView)
+        view.addSubview(mainView)
         view.addSubview(menuControllerView)
         
-        // let's go ahead and use Auto Layout
         NSLayoutConstraint.activate([
-            mainControllerView.topAnchor.constraint(equalTo: view.topAnchor),
-            mainControllerView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            mainControllerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            
+            mainView.topAnchor.constraint(equalTo: view.topAnchor),
+            mainView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+
             menuControllerView.topAnchor.constraint(equalTo: view.topAnchor),
-            menuControllerView.trailingAnchor.constraint(equalTo: mainControllerView.safeAreaLayoutGuide.leadingAnchor),
+            menuControllerView.trailingAnchor.constraint(equalTo: mainView.safeAreaLayoutGuide.leadingAnchor),
             menuControllerView.widthAnchor.constraint(equalToConstant: menuWidth),
-            menuControllerView.bottomAnchor.constraint(equalTo: mainControllerView.bottomAnchor)
+            menuControllerView.bottomAnchor.constraint(equalTo: mainView.bottomAnchor)
             ])
         
-        self.homeControllerViewConstraint = mainControllerView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0)
-        homeControllerViewConstraint.isActive = true
+        mainViewLeadingContstraint = mainView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0)
+        mainViewTrailingConstraint =  mainView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0)
+        mainViewLeadingContstraint.isActive = true
+        mainViewTrailingConstraint.isActive = true
         
         setupViewControllers()
     }
     
     fileprivate func setupViewControllers() {
-        // let's add back our HomeController into the redView
-      //  let homeController = HomeViewController()
-        actingViewController = HomeViewController()
-        let menuController = MenuViewController()
         
-        let homeView = actingViewController!.view!
+        let menuController = MenuViewController()
+        let homeView = actingViewController.view!
         let menuView = menuController.view!
         
         homeView.translatesAutoresizingMaskIntoConstraints = false
         menuView.translatesAutoresizingMaskIntoConstraints = false
         
-        mainControllerView.addSubview(homeView)
-        mainControllerView.addSubview(darkCoverView)
+        mainView.addSubview(homeView)
+        mainView.addSubview(darkCoverView)
         menuControllerView.addSubview(menuView)
         
         NSLayoutConstraint.activate([
             // top, leading, bottom, trailing anchors
-            homeView.topAnchor.constraint(equalTo: mainControllerView.topAnchor),
-            homeView.leadingAnchor.constraint(equalTo: mainControllerView.leadingAnchor),
-            homeView.bottomAnchor.constraint(equalTo: mainControllerView.bottomAnchor),
-            homeView.trailingAnchor.constraint(equalTo: mainControllerView.trailingAnchor),
+            homeView.topAnchor.constraint(equalTo: mainView.topAnchor),
+            homeView.leadingAnchor.constraint(equalTo: mainView.leadingAnchor),
+            homeView.bottomAnchor.constraint(equalTo: mainView.bottomAnchor),
+            homeView.trailingAnchor.constraint(equalTo: mainView.trailingAnchor),
             
             menuView.topAnchor.constraint(equalTo: menuControllerView.topAnchor),
             menuView.leadingAnchor.constraint(equalTo: menuControllerView.leadingAnchor),
             menuView.bottomAnchor.constraint(equalTo: menuControllerView.bottomAnchor),
             menuView.trailingAnchor.constraint(equalTo: menuControllerView.trailingAnchor),
             
-            darkCoverView.topAnchor.constraint(equalTo: mainControllerView.topAnchor),
-            darkCoverView.leadingAnchor.constraint(equalTo: mainControllerView.leadingAnchor),
-            darkCoverView.bottomAnchor.constraint(equalTo: mainControllerView.bottomAnchor),
-            darkCoverView.trailingAnchor.constraint(equalTo: mainControllerView.trailingAnchor),
+            darkCoverView.topAnchor.constraint(equalTo: mainView.topAnchor),
+            darkCoverView.leadingAnchor.constraint(equalTo: mainView.leadingAnchor),
+            darkCoverView.bottomAnchor.constraint(equalTo: mainView.bottomAnchor),
+            darkCoverView.trailingAnchor.constraint(equalTo: mainView.trailingAnchor),
             ])
         
-        addChild(actingViewController!)
+        addChild(actingViewController)
         addChild(menuController)
         menuController.didMove(toParent: self)
     }
-
 }

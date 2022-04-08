@@ -27,7 +27,6 @@ class MenuTableViewCell: UITableViewCell {
         return label
     }()
 
-   
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
@@ -44,12 +43,9 @@ class MenuTableViewCell: UITableViewCell {
         stackView.isLayoutMarginsRelativeArrangement = true
         stackView.layoutMargins = .init(top: 10, left: 12, bottom: 10, right: 12)
         stackView.spacing = 10
-        
-        
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
 }

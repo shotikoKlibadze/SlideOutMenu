@@ -46,7 +46,6 @@ class MenuViewController : UITableViewController {
         cell.backgroundColor = .systemGray5
         cell.tittleLable.text = menuItems[indexPath.row]
         cell.iconImageView.image = UIImage(named: menuItems[indexPath.row])
-       
         return cell
     }
         
@@ -54,7 +53,5 @@ class MenuViewController : UITableViewController {
         tableView.deselectRow(at: indexPath, animated: true)
         controller?.didSelectMenuItem(indexPath: indexPath)
     }
-    
-    
-    
+
 }

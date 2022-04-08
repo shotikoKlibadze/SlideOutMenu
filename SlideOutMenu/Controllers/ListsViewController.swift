@@ -22,6 +22,7 @@ class ListsViewController: UIViewController {
         view.addSubview(label)
         view.backgroundColor = .white
         label.frame = view.frame
+        navigationController?.navigationBar.prefersLargeTitles = true
+        title = "Lists"
     }
-
 }
